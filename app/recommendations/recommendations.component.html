@@ -1,0 +1,154 @@
+
+<div class="panel-header panel-header-sm increase-height" >
+
+    <h1 class="topleft" >Top Stocks</h1>
+
+    <p-dropdown  [options]="sectorList" appendTo="body" [(ngModel)]="selectedSector" placeholder="Select a Sector" class="dropdown1" [showClear]="true"  ></p-dropdown>  
+
+    <p-dropdown  [options]="parameters" appendTo="body" [(ngModel)]="selectedParameter" placeholder="Select a Parameter"  class="dropdown2" [showClear]="true" ></p-dropdown>
+
+    <p-button *ngIf = "showTable" type="button" class="button"  label= "Get Recommendation" (onClick)="recommendationClick($event)" ></p-button>
+</div>
+
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <!-- <div class="card-header"></div> -->
+                <p-tabView>
+                    <p-tabPanel header="BUY" >
+                       <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                            <thead class=" text-primary">
+                                <th>
+                                Company Name
+                                </th>
+                                <th>
+                                Current Price
+                                </th>
+                                <th>
+                                Bid Price
+                                </th>
+                                <th>
+                                Change (%)
+                                </th> 
+                                <th>
+                                Market Cap.(Crores)
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let element of tableHeadings"> 
+                                    <td>{{element.companyName}}</td>
+                                    <td>{{element.currentPrice}}</td>
+                                    <td>{{element.bidPrice}}</td>
+                                    <td>{{element.change}}</td> 
+                                    <td>{{element.marketCap}}</td> 
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </p-tabPanel>
+                    <p-tabPanel header="SELL" >
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                <thead class=" text-primary">
+                                    <th>
+                                    Company Name
+                                    </th>
+                                    <th>
+                                    Current Price
+                                    </th>
+                                    <th>
+                                    Bid Price
+                                    </th>
+                                    <th>
+                                    Change (%)
+                                    </th> 
+                                    <th>
+                                    Market Cap.(Crores)
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let element of tableHeadings"> 
+                                        <td>{{element.companyName}}</td>
+                                        <td>{{element.currentPrice}}</td>
+                                        <td>{{element.bidPrice}}</td>
+                                        <td>{{element.change}}</td> 
+                                        <td>{{element.marketCap}}</td> 
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+
+        <!-- <div class="col-md-4"> -->
+            <!-- <div class="card card-user">
+                <div class="image">
+                <img src="../assets/img/bg5.jpg" alt="...">
+                </div>
+                <div class="card-body">
+                <div class="author">
+                    <a href="#">
+                    <img class="avatar border-gray" src="{{imgUrl}}" alt="...">
+                    <h5 class="title">{{user.firstName}} {{user.lastName}} </h5>
+                    </a>
+                    <p class="description">
+                    {{user.userName}}
+                    </p>
+                </div> -->
+                
+                <div class="col-md-4">
+                    <div class="card card-user">
+                      <div class="card-header">
+                        <h5 class="card-category">Statistics</h5>
+                        <h5 class="card-title">Performance</h5>
+                      </div>
+                       <div class="card-body">
+                        <div class="chart-area">
+                          <canvas baseChart id="barChartSimpleGradientsNumbers"
+                                      [datasets]="lineChartGradientsNumbersData"
+                                      [labels]="lineChartGradientsNumbersLabels"
+                                      [colors]="lineChartGradientsNumbersColors"
+                                      [options]="lineChartGradientsNumbersOptions"
+                                      [chartType]="lineChartGradientsNumbersType"
+                                      (chartHover)="chartHovered($event)"
+                                      (chartClick)="chartClicked($event)"></canvas>
+                        </div>
+                      </div> 
+
+                </div>
+                <!-- <hr>
+                <div class="button-container">
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+                <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
+                    <i class="fab fa-twitter"></i>
+                </button>
+                </div> -->
+
+            </div>
+        <!-- </div> -->
+    </div>
+</div>
+
+
+
+
+
+<!-- 1. recommendation Screen - render all components with dummy data
+2. Backend Team : 
+    - api for UserHistory - POjo/respository, service
+    - Yahoo finance - company, volume, market cap, pe ratio, roe, current price, open, close,low, high
+    - write get Sectors - list of Sectors
+    - recoomendation logic ;
+        - sorting based on parameters
+    - get dashboard recommendation - top stock out of all stocks
+    - get price shockers, volume shockers - -->
