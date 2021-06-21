@@ -65,14 +65,14 @@ describe('RecommendationsComponent', () => {
   it('#recommendationClick() should set #hasError to true if Sector or Parameter is/are null', async () => {
     component.selectedSector = "" ;
     component.selectedParameter = "Growth" ;
-    component.recommendationClick(event) ;
+    component.recommendationButtonClick(event) ;
     expect(component.hasError).toBeTruthy() ;
   })
 
   it('#recommendationClick() should set #hasError to false if Sector and Parameter are not null',async () => {
     component.selectedSector = "Automobile" ;
     component.selectedParameter = "Growth" ;
-    component.recommendationClick(event) ;
+    component.recommendationButtonClick(event) ;
     expect(component.hasError).toBeFalsy() ;
   })
 });
