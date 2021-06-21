@@ -56,6 +56,9 @@
                   </td> 
                 
                 </tr>
+                <tr  *ngIf="priceShockers.length ==0">
+                  <td colspan="columnData.length">No Data Available</td>
+                </tr>
             
               </tbody>
             </table>
@@ -129,6 +132,9 @@
         <td style="color: black; text-align: center;">
           {{element.volume | number}}
         </td>
+      </tr>
+      <tr  *ngIf="priceShockers.length ==0">
+        <td colspan="columnData.length">No Data Available</td>
       </tr>
   
     </tbody>

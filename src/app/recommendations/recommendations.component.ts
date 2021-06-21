@@ -97,144 +97,6 @@ export class RecommendationsComponent implements OnInit
     ];
   }
 
-  //Event: Showing Success message after stock is saved
-  showSuccessMessage(element : StocksRecommended) 
-  {
-    this.messageService.add({severity:'info', summary: 'Success', detail: 'Saved successfully !'});
-    this.selectedStockToSave = element ;
-    this.displayDialogueBox = false ;
-    this.addSavedStocks() ;
-    console.log("Success Message for saving stocks generated !") ;
-    console.log("Saved Stock : ", element.companyName) ;
-  }
-
-  //Event: Showing Dialogue Box for taking input for quantity of stocks to save
-  showDialogueBox() 
-  {
-    this.displayDialogueBox = true;
-    console.log("Dialogue Box to input quantity of stocks to save is displayed !") ;
-  }
-
-  //Event: Handling Change in Transaction Type wrt Bar Graph
-  @ViewChild(TabView) tabView: TabView;
-  handleChange(e:any) 
-  {
-    console.log("Changing tab " , e) ;
-
-    var index = e.index;
-    this.transactionType = this.tabView.tabs[index].header ;
-
-    console.log("Transaction Type Changed to "+this.transactionType) ;
-
-    if(this.transactionType == "BUY")
-    {
-      this.showBUYTable = true ;
-      this.lineChartGradientsNumbersData = [
-        {
-          label: this.selectedParameter,
-          pointBorderWidth: 2,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 1,
-          pointRadius: 4,
-          fill: true,
-          borderWidth: 1,
-         data: [190, 99, 70, 96, 123]
- 
-        }
-      ];
-
-      this.lineChartGradientsNumbersColors = [
-        {
-          backgroundColor: this.gradientFill,
-          borderColor: "#2CA8FF",
-          pointBorderColor: "#FFF",
-          pointBackgroundColor: "#2CA8FF",
-        }
-      ];
-      this.lineChartGradientsNumbersLabels = ["Bal Pharma", "TCS", "Infosys", "Walmart", "MasterCard"];
-   
-    }
-
-    else if(this.transactionType == "SELL")
-    {
-      this.showSELLTable = true ;
-      this.lineChartGradientsNumbersData = [
-        {
-          label: this.selectedParameter ,
-          pointBorderWidth: 2,
-          pointHoverRadius: 4,
-          pointHoverBorderWidth: 1,
-          pointRadius: 4,
-          fill: true,
-          borderWidth: 1,
-         data: [120, 99, 100, 68, 193]
- 
-        }
-      ];
-
-      this.lineChartGradientsNumbersColors = [
-      {
-        backgroundColor: this.gradientFill,
-        borderColor: "#2CA8FF",
-        pointBorderColor: "#FFF",
-        pointBackgroundColor: "#2CA8FF",
-      }
-    ];
-      this.lineChartGradientsNumbersLabels = ["Bal Pharma", "TCS", "Infosys", "Walmart", "MasterCard"];
-    
-    }
-  }
-
-  //Event: Get recommendation button shows BUY/SELL recommendations
-  public recommendationClick():void
-  {
-
-    console.log("Get Recommendation Button is Clicked !" ) ;
-
-    //Check if sector & parameter are selected are not
-    if (this.selectedSector.length == 0 || this.selectedParameter.length == 0) 
-    {
-      this.hasError = true;
-      return;
-    } 
-    else 
-    {
-      this.hasError = false;
-      console.log("Getting Recommendations !") ;
-      this.getRecommendation() ;
-    }
-  }
-
-  //Event: Bar Graph Clicked
-  public chartClicked(e:any):void 
-  {
-    console.log("Bar Graph is clicked !", e);
-  }
-
-  //Event: Bar Graph Hovered
-  public chartHovered(e:any):void 
-  {
-    console.log("Bar Graph is hovered !" ,e);
-  }
-
-  
-  //Event: Coverting Hexadecimal to RGB
-  public hexToRGB(hex, alpha) 
-  {
-    var r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 7), 16);
-
-    if (alpha) 
-    {
-      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-    } 
-    else 
-    {
-      return "rgb(" + r + ", " + g + ", " + b + ")";
-    }
-  }
-
   ngOnInit() :void
   { 
     //Sectors
@@ -264,8 +126,13 @@ export class RecommendationsComponent implements OnInit
   }, err => {
   })
 
-    this.recommendationClick() ;  
-    
+    this.recommendationButtonClick() ;  //why called here?
+  this.initialChartConfiguration(); 
+
+  }
+
+  initialChartConfiguration(){
+  
     //Bar Graph
     this.canvas = document.getElementById("barChartSimpleGradientsNumbers");
     this.ctx = this.canvas.getContext("2d");
@@ -364,7 +231,6 @@ export class RecommendationsComponent implements OnInit
       }
 
      this.lineChartGradientsNumbersType = 'bar';
-
   }
 
   //Error Handling
@@ -372,7 +238,7 @@ export class RecommendationsComponent implements OnInit
   {
     this.recommendationService.getRecommendation(this.selectedSector, this.selectedParameter).subscribe((result :StocksRecommended[]) =>
     {
-      if(result == null )
+      if(result == null || result.length == 0)
       {
         this.messageService1.add({severity : 'error', summary : 'Error',detail : 'Incorrect Sector or Parameter'}) ;
 
@@ -469,5 +335,123 @@ export class RecommendationsComponent implements OnInit
          // this.showBUYTable = true ;
       }
   }
+
+
+  //Event: Showing Success message after stock is saved
+  showSuccessMessage(element : StocksRecommended) 
+  {
+    this.messageService.add({severity:'info', summary: 'Success', detail: 'Saved successfully !'});
+    this.selectedStockToSave = element ;
+    this.displayDialogueBox = false ;
+    this.addSavedStocks() ;
+    console.log("Success Message for saving stocks generated !") ;
+    console.log("Saved Stock : ", element.companyName) ;
+  }
+
+  //Event: Showing Dialogue Box for taking input for quantity of stocks to save
+  showDialogueBox() 
+  {
+    this.displayDialogueBox = true;
+    console.log("Dialogue Box to input quantity of stocks to save is displayed !") ;
+  }
+
+  //Event: Handling Change in Transaction Type wrt Bar Graph
+  @ViewChild(TabView) tabView: TabView;
+  handleChange(e:any) 
+  {
+    console.log("Changing tab " , e) ;
+
+    var index = e.index;
+    this.transactionType = this.tabView.tabs[index].header ;
+
+    console.log("Transaction Type Changed to "+this.transactionType) ;
+    this.lineChartGradientsNumbersData = [
+      {
+        label: this.selectedParameter,
+        pointBorderWidth: 2,
+        pointHoverRadius: 4,
+        pointHoverBorderWidth: 1,
+        pointRadius: 4,
+        fill: true,
+        borderWidth: 1,
+       data: [190, 99, 70, 96, 123]
+
+      }
+    ];
+
+    this.lineChartGradientsNumbersColors = [
+      {
+        backgroundColor: this.gradientFill,
+        borderColor: "#2CA8FF",
+        pointBorderColor: "#FFF",
+        pointBackgroundColor: "#2CA8FF",
+      }
+    ];
+
+    if(this.transactionType == "BUY")
+    {
+      this.showBUYTable = true ;
+      this.lineChartGradientsNumbersLabels = ["Bal Pharma", "TCS", "Infosys", "Walmart", "MasterCard"];
+   
+    }
+
+    else if(this.transactionType == "SELL")
+    {
+      this.showSELLTable = true ;
+      this.lineChartGradientsNumbersLabels = ["Bal Pharma", "TCS", "Infosys", "Walmart", "MasterCard"];
+    
+    }
+  }
+
+  //Event: Get recommendation button shows BUY/SELL recommendations
+  public recommendationButtonClick():void
+  {
+
+    console.log("Get Recommendation Button is Clicked !" ) ;
+
+    //Check if sector & parameter are selected are not
+    if (this.selectedSector.length == 0 || this.selectedParameter.length == 0) 
+    {
+      this.hasError = true;
+      return;
+    } 
+    else 
+    {
+      this.hasError = false;
+      console.log("Getting Recommendations !") ;
+      this.getRecommendation() ;
+    }
+  }
+
+  //Event: Bar Graph Clicked
+  public chartClicked(e:any):void 
+  {
+    console.log("Bar Graph is clicked !", e);
+  }
+
+  //Event: Bar Graph Hovered
+  public chartHovered(e:any):void 
+  {
+    console.log("Bar Graph is hovered !" ,e);
+  }
+
+  
+  //Event: Coverting Hexadecimal to RGB
+  public hexToRGB(hex, alpha) 
+  {
+    var r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
+
+    if (alpha) 
+    {
+      return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    } 
+    else 
+    {
+      return "rgb(" + r + ", " + g + ", " + b + ")";
+    }
+  }
+
 
 }
